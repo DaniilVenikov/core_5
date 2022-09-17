@@ -27,32 +27,56 @@ public class Main {
         File file3 = new File("data.xml");
         File file4 = new File("data2.json");
 
-//        createFile(file3);
+
+        //1-АЯ ЗАДАЧА
+        /*
+        создаём список, который будет содержать массивы строк, исходные строки разбиваем на значения по запятой
+        далее берём массивы из списка и записываем значения в файл data.csv с помощью метода writeCSVFile
+         */
+        List<String[]> listEmployee = new ArrayList<>();
+        listEmployee.add("1,John,Smith,USA,25".split(","));
+        listEmployee.add("2,Ivan,Petrov,RU,23".split(","));
+
+        for(String[] employee : listEmployee){
+            writeCSVFile(employee, file1);
+        }
+
+        /*
+        создаём массив columnMapping, который содержит строчки с информацией о предназначении колонок в CSV файле
+        этот массив будем использовать для передачи в метод как параметра, который нужен для создания стратегии
+         */
+        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
+
+        //парсим значения колонок из CSV файла в список объктов Employee
+        List<Employee> staff = parseCSV(columnMapping, file1.getName());
+
+        //полученный список преобразовываем в строчку в формате json
+        String json = listToJson(staff);
+
+        //записываем полученную строку в файл data.json
+        writeString(json, file2);
 
 
-//        List<String[]> listEmployee = new ArrayList<>();
-//        listEmployee.add("1,John,Smith,USA,25".split(","));
-//        listEmployee.add("2,Ivan,Petrov,RU,23".split(","));
+        //2-АЯ ЗАДАЧА
+        //метод createXMLFile созадаём XML-файл c нужными данными
+        createXMLFile(file3);
 
-//        for(String[] employee : listEmployee){
-//            writeCSVFile(employee, file1);
-//        }
+        /*
+        с помощью метода parseXML парсим значения из файла data.xml в список объектов Employee
+        далее передаём этот список как параметр в метод listToJson, который преобразовыет наш список объетов Employee
+        в строку json
+         */
+        String json_2 =  listToJson(parseXML(file3.getPath()));
 
-//        String[] columnMapping = {"id", "firstName", "lastName", "country", "age"};
-//
-//        List<Employee> staff = parseCSV(columnMapping, file1.getName());
-//
-//        String json = listToJson(staff);
-//
-//        writeString(json, file2);
+        //записываем наш результат в файл data2.json
+        writeString(json_2, file4);
 
-//        createXMLFile(file3);
 
-//        String json_2 =  listToJson(parseXML(file3.getPath()));
-//        writeString(json_2, file4);
-
-        String json = readJson(file4.getPath());
-        List<Employee> employees = jsonToList(json);
+        //3-Я ЗАДАЧА
+        //читаем данные из файла data2.json и возвращаем результат в виде строки
+        String json_3 = readJson(file4.getPath());
+        //прочитанный json преобразуем в список сотрудников
+        List<Employee> employees = jsonToList(json_3);
         System.out.println(employees);
 
 
